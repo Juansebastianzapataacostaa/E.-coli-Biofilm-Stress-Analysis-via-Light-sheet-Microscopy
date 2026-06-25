@@ -69,7 +69,7 @@ LSFM time-lapse images (microfluidic chip)
 
 **Juan Sebastian Zapata Acosta**
 * Microbiologist — MSc Candidate in Computational Biology · Universidad de los Andes
-* [https://github.com](https://github.com/Juansebastianzapataacostaa) · [https://linkedin.com](www.linkedin.com/in/juan-sebastian-zapata-acosta-789bb6224) · 10.sebsatian.zapa@gmail.com  
+* [https://github.com](https://github.com/Juansebastianzapataacostaa) · www.linkedin.com/in/juan-sebastian-zapata-acosta-789bb6224 · 10.sebsatian.zapa@gmail.com  
 
 ## License
 
