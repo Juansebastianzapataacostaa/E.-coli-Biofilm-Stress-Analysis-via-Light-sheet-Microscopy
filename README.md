@@ -1,5 +1,8 @@
-# E.coli Biofilm Stress Analysis via Light sheet Microscopy
+# E. coli Biofilm Stress Analysis via Light-sheet Microscopy
+
 Quantitative image analysis pipeline for tracking gene expression dynamics in E. coli biofilms under metabolic stress, from Light Sheet Fluorescence Microscopy (LSFM) time-lapse data. Processes GFP fluorescence intensity (pRpoH heat-stress reporter) across microfluidic chip experiments, reconstructing community-level expression curves over time.
+
+![LSFM Setup](images/montaje.png)
 
 ## Background
 
@@ -10,41 +13,45 @@ This repository contains the image processing and data reconstruction pipeline b
 ## Pipeline overview
 
 ```text
-LSFM time-lapse images (microfluidic chip)
-            │
-            ▼
-    image_processing.py
-    ┌─────────────────────────────────┐
-    │  Per-image processing           │
-    │  · Top-Hat morphological filter │
-    │  · Segmentation                 │
-    │  · Mean GFP intensity extraction│
-    └─────────────────────────────────┘
-            │
-            ▼
-    main.py
-    ┌─────────────────────────────────┐
-    │  Pipeline configuration         │
-    │  · Parameter setup (Top-Hat     │
-    │    size, paths, thresholds)     │
-    │  · Batch execution              │
-    └─────────────────────────────────┘
-            │
-            ▼
-      .txt files (mean intensity per image)
-            │
-            ▼
-    reconstruct_intensity.py
-    ┌─────────────────────────────────┐
-    │  Data reconstruction            │
-    │  · Reads per-image .txt outputs │
-    │  · Reconstructs community-level │
-    │    intensity curve over time    │
-    └─────────────────────────────────┘
-            │
-            ▼
-    Gene expression dynamics plot
+       Raw LSFM time-lapse images
+                   │
+                   ▼
+         Fiji / ImageJ (Pre-processing)
+   ┌────────────────────────────────────────┐
+   │ · Optical blur & angle correction      │
+   │ · Geometric reordering (D = 2*cos(α))  │
+   └────────────────────────────────────────┘
+                   │
+                   ▼
+         Corrected .tif Stacks
+                   │
+                   ▼
+         image_processing.py
+   ┌────────────────────────────────────────┐
+   │ · Top-Hat morphological filter         │
+   │ · Thresholding & Segmentation (Otsu)   │
+   │ · Mean GFP intensity extraction        │
+   └────────────────────────────────────────┘
+                   │
+                   ▼
+         main.py (Batch execution)
+                   │
+                   ▼
+         Per-frame .txt intensity data
+                   │
+                   ▼
+         reconstruct_intensity.py
+   ┌────────────────────────────────────────┐
+   │ · Read & normalize intensity data      │
+   │ · Plot community gene expression curve │
+   └────────────────────────────────────────┘
+                   │
+                   ▼
+      Gene expression dynamics plot
 ```
+
+### 🔬 Fiji Pre-processing Step
+Before running the Python pipeline, raw LSFM images must be pre-processed in **Fiji (ImageJ)**. This corrects optical distortions, defocusing, and the deskew angle caused by the physical microfluidic chip mounting using the trigonometric relationship $D_{\mu m} = 2 \cdot \cos(\alpha)$.
 
 ## Repository structure
 
@@ -52,7 +59,9 @@ LSFM time-lapse images (microfluidic chip)
 | :--- | :--- |
 | **image_processing.py** | Core image processing library. Applies morphological filtering (Top-Hat) and extracts mean GFP fluorescence intensity frame by frame. |
 | **main.py** | Main execution script. Sets analysis parameters and runs the batch processing pipeline over the full image set. |
-| **reconstruct_intensity.py** | Post-processing module. Reads per-image intensity outputs and reconstructs the community-level gene expression curve across time.|
+| **reconstruct_intensity.py** | Post-processing module. Reads per-image intensity outputs and reconstructs the community-level gene expression curve across time. |
+
+![Image Segmentation](images/mascaras.png)
 
 ## Experimental context
 
@@ -69,7 +78,13 @@ LSFM time-lapse images (microfluidic chip)
 
 **Juan Sebastian Zapata Acosta**
 * Microbiologist — MSc Candidate in Computational Biology · Universidad de los Andes
-* [https://github.com](https://github.com/Juansebastianzapataacostaa) · www.linkedin.com/in/juan-sebastian-zapata-acosta-789bb6224 · 10.sebsatian.zapa@gmail.com  
+* [GitHub]((https://github.com/Juansebastianzapataacostaa)) · [LinkedIn](https://www.linkedin.com/in/juan-sebastian-zapata-acosta-789bb6224) · 10.sebsatian.zapa@gmail.com
+
+## Citation
+
+If you use this pipeline, code, or experimental context in your research, please cite the official thesis published in the Universidad de los Andes repository:
+
+> Zapata Acosta, J. S. (2024). *Evaluación de expresión génica de biopelículas en comunidades de E. Coli por estrés, a partir de microscopía de hoja de luz* (Master's thesis, Universidad de los Andes). Retrieved from [Séneca - Repositorio Institucional Uniandes](https://repositorio.uniandes.edu.co/entities/publication/023896e3-58bd-46ab-b7ad-8b47eedfe04a).
 
 ## License
 
